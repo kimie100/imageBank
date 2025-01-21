@@ -4,7 +4,14 @@
   "description": "image",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "pm2:start": "pm2 start server.js --name imagebank",
+    "pm2:stop": "pm2 stop imagebank",
+    "pm2:restart": "pm2 restart imagebank",
+    "pm2:delete": "pm2 delete imagebank",
+    "pm2:logs": "pm2 logs imagebank",
+    "pm2:status": "pm2 status"
   },
   "keywords": [
     "image"
