@@ -64,6 +64,7 @@ app.post("/api/saveImage", async (req, res) => {
     const { image, type, username } = req.body;
     let paths, filenames;
     const formatted3 = format(new Date(), "dd-MM-yyyy");
+    const randomString = Math.random().toString(36).substring(2, 8);
     switch (type) {
       case "WITHDRAW":
         paths = `WITHDRAW/${formatted3}`;
@@ -78,6 +79,9 @@ app.post("/api/saveImage", async (req, res) => {
           new Date(),
           "dd-MM-yyyy HH-mm-ss"
         )}`;
+        case "REDEEM":
+        paths = `REDEEM/${username}`;
+        filenames = `ITEM-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
         break;
       default:
         break;
