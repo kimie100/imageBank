@@ -83,6 +83,10 @@ app.post("/api/saveImage", async (req, res) => {
         paths = `REDEEM/${username}`;
         filenames = `ITEM-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
         break;
+        case "USER":
+        paths = `VIPUSER`;
+        filenames = `USER-${username}`;
+        break;
       default:
         break;
     }
