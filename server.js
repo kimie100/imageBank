@@ -112,6 +112,65 @@ app.post("/api/saveImage", async (req, res) => {
   }
 });
 
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post("/api/saveImageV2", upload.single("image"), async (req, res) => {
+  try {
+    const { type, username } = req.body;
+    const image = req.file.buffer;
+    let paths, filenames;
+    const formatted3 = format(new Date(), "dd-MM-yyyy");
+    const randomString = Math.random().toString(36).substring(2, 8);
+    switch (type) {
+      case "WITHDRAW":
+        paths = `WITHDRAW/${formatted3}`;
+        filenames = `${username}-WITHDRAW-${format(
+          new Date(),
+          "dd-MM-yyyy HH-mm-ss"
+        )}`;
+        break;
+      case "DEPOSIT":
+        paths = `DEPOSIT/${formatted3}`;
+        filenames = `${username}-DEPOSIT-${format(
+          new Date(),
+          "dd-MM-yyyy HH-mm-ss"
+        )}`;
+      case "REDEEM":
+        paths = `REDEEM/${username}`;
+        filenames = `ITEM-${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2, 8)}`;
+        break;
+      case "USER":
+        paths = `VIPUSER`;
+        filenames = `USER-${username}`;
+        break;
+      default:
+        break;
+    }
+
+    const result = await imageStorage.saveImage(image, {
+      width: 1200,
+      quality: 80,
+      format: "webp",
+      subDirectory: paths,
+      filename: filenames,
+    });
+
+    if (result.success) {
+      console.log(result.success);
+      res.status(201).json({ url: result.fileInfo.url });
+    } else {
+      console.log(result.error);
+      res.status(400).json({ error: result.error });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "error uploading file" });
+  }
+});
+
 // Attendance check endpoint
 
 app.get("/", (req, res) => {
