@@ -54,7 +54,7 @@ class ImageStorage {
     base64String,
     {
       width = null,
-      quality = 80,
+      quality = 100,
       format = "jpeg",
       maintainAspectRatio = true,
       subDirectory = "",

@@ -93,7 +93,7 @@ app.post("/api/saveImage", async (req, res) => {
 
     const result = await imageStorage.saveImage(image, {
       width: 1200,
-      quality: 80,
+      quality: 100,
       format: "webp",
       subDirectory: paths,
       filename: filenames,
@@ -152,7 +152,7 @@ app.post("/api/saveImageV2", upload.single("image"), async (req, res) => {
 
     const result = await imageStorage.saveImage(image, {
       width: 1200,
-      quality: 80,
+      quality: 100,
       format: "webp",
       subDirectory: paths,
       filename: filenames,
