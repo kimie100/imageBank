@@ -62,35 +62,40 @@ const ensureUploadDir = (dirname) => {
 app.post("/api/saveImage", async (req, res) => {
   try {
     const { image, type, username } = req.body;
+    console.log("🚀 ~ type:", type)
     let paths, filenames;
+
     const formatted3 = format(new Date(), "dd-MM-yyyy");
     const randomString = Math.random().toString(36).substring(2, 8);
     switch (type) {
       case "WITHDRAW":
         paths = `WITHDRAW/${formatted3}`;
+
         filenames = `${username}-WITHDRAW-${format(
           new Date(),
-          "dd-MM-yyyy HH-mm-ss"
+          "dd-MM-yyyy HH-mm-ss-SSS"
         )}`;
         break;
       case "DEPOSIT":
         paths = `DEPOSIT/${formatted3}`;
         filenames = `${username}-DEPOSIT-${format(
           new Date(),
-          "dd-MM-yyyy HH-mm-ss"
+          "dd-MM-yyyy HH-mm-ss-SSS"
         )}`;
-        case "REDEEM":
+        break;
+      case "REDEEM":
         paths = `REDEEM/${username}`;
         filenames = `ITEM-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
         break;
-        case "USER":
+      case "USER":
         paths = `VIPUSER`;
         filenames = `USER-${username}`;
         break;
       default:
         break;
     }
-
+    console.log("🚀 ~ paths:", paths);
+    console.log("🚀 ~ filenames:", filenames)
     const result = await imageStorage.saveImage(image, {
       width: 1200,
       quality: 100,
