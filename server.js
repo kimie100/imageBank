@@ -9,7 +9,7 @@ const axios = require("axios");
 const app = express();
 const port = process.env.PORT || 3001;
 const ImageStorage = require("./image");
-
+const { unlink, access } = fs.promises;
 // Initialize with your uploads directory
 const imageStorage = new ImageStorage("uploads");
 // Store temporary URLs and their expiration times
@@ -175,6 +175,35 @@ app.post("/api/saveImageV2", upload.single("image"), async (req, res) => {
     res.status(500).json({ error: "error uploading file" });
   }
 });
+
+app.post("/api/delete", async (req, res) => {
+  const { name } = req.body;
+
+  // Validate input
+  if (!name) {
+    return res.status(400).json({ error: "Image name is required" });
+  }
+
+  // Define the directory where images are stored
+  const imagePath = path.join(__dirname, name); // Adjust 'uploads' to your folder
+
+  try {
+    // Try to delete the file
+
+    await access(imagePath)
+
+    await unlink(imagePath);
+    res.json({ message: "Image deleted successfully" });
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      res.status(404).json({ error: "Image not found" });
+    } else {
+      console.error("Error deleting image:", err);
+      res.status(500).json({ error: "Failed to delete image" });
+    }
+  }
+});
+
 
 // Attendance check endpoint
 
